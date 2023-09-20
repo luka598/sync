@@ -1,12 +1,14 @@
+#include "bytes.hpp"
 #include "crypto.hpp"
+#include "file.hpp"
 #include <filesystem>
 #include <iostream>
 
 int main(int argc, char *argv[]) {
-  /* for (const auto &entry : std::filesystem::recursive_directory_iterator( */
-  /*          std::filesystem::path("test"))) { */
-  /*   if (entry.is_regular_file()) */
-  /*     std::cout << entry << std::endl; */
-  /* } */
+  for (std::filesystem::path p : file::get_files("test")) {
+    std::cout << p.generic_string() << std::endl;
+    std::cout << file::read_file(p.native()).data.repr(Bytes::HEX, " ")
+              << std::endl;
+  }
   return 0;
 }

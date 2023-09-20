@@ -1,5 +1,6 @@
 #include "crypto.hpp"
 
+#include "bytes.hpp"
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
@@ -10,15 +11,6 @@
 #include <vector>
 
 namespace crypto {
-Bytes string_to_bytes(std::string s) { return Bytes(s.begin(), s.end()); }
-std::string bytes_to_string(Bytes b) { return std::string(b.begin(), b.end()); }
-std::string bytes_to_hex(const Bytes data, std::string sep) {
-  std::stringstream ss;
-  for (const unsigned char &byte : data) {
-    ss << std::hex << std::setw(2) << std::setfill('0') << (int)byte << sep;
-  }
-  return ss.str();
-}
 
 Result sha256(std::string input) {
   OpenSSL_add_all_algorithms();
@@ -52,8 +44,7 @@ Result sha256(std::string input) {
   return {true, std::vector<unsigned char>(md_value, md_value + md_len)};
 }
 
-Result encrypt(const std::vector<unsigned char> key,
-               const std::vector<unsigned char> message) {
+Result encrypt(const Bytes key, const Bytes message) {
   EVP_CIPHER_CTX *ctx;
   unsigned char *c_message = nullptr;
   int c_message_len;
@@ -62,7 +53,7 @@ Result encrypt(const std::vector<unsigned char> key,
     return {false, {}};
   }
 
-  if (EVP_EncryptInit_ex(ctx, EVP_aes_192_ecb(), nullptr, key.data(),
+  if (EVP_EncryptInit_ex(ctx, EVP_aes_192_ecb(), nullptr, key.c_array(),
                          nullptr) != 1) {
     EVP_CIPHER_CTX_free(ctx);
     return {false, {}};
@@ -71,8 +62,8 @@ Result encrypt(const std::vector<unsigned char> key,
   int len;
   c_message = new unsigned char[message.size() + AES_BLOCK_SIZE];
 
-  if (EVP_EncryptUpdate(ctx, c_message, &len, message.data(), message.size()) !=
-      1) {
+  if (EVP_EncryptUpdate(ctx, c_message, &len, message.c_array(),
+                        message.size()) != 1) {
     EVP_CIPHER_CTX_free(ctx);
     delete[] c_message;
     return {false, {}};
@@ -105,7 +96,7 @@ Result decrypt(const Bytes key, const Bytes c_message) {
     return {false, {}};
   }
 
-  if (EVP_DecryptInit_ex(ctx, EVP_aes_192_ecb(), nullptr, key.data(),
+  if (EVP_DecryptInit_ex(ctx, EVP_aes_192_ecb(), nullptr, key.c_array(),
                          nullptr) != 1) {
     EVP_CIPHER_CTX_free(ctx);
     return {false, {}};
@@ -114,7 +105,7 @@ Result decrypt(const Bytes key, const Bytes c_message) {
   int len;
   message = new unsigned char[c_message.size()];
 
-  if (EVP_DecryptUpdate(ctx, message, &len, c_message.data(),
+  if (EVP_DecryptUpdate(ctx, message, &len, c_message.c_array(),
                         c_message.size()) != 1) {
     EVP_CIPHER_CTX_free(ctx);
     delete[] message;
