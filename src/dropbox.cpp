@@ -22,18 +22,9 @@ struct Result_API {
 
 enum class REQUEST { GET, POST };
 
-json vpss_to_json(std::vector<std::pair<std::string, std::string>> vpss) {
-  nlohmann::json jsonObject;
-
-  for (const auto &pair : vpss) {
-    jsonObject[pair.first] = pair.second;
-  }
-
-  return jsonObject;
-}
-
 Result_API api_request(REQUEST request_type, std::string path,
-                       std::string bearer, json arguments) {
+                       std::string bearer, json arguments,
+                       bool log_json_parse_exception = false) {
   const std::string DROPBOX_API_BASE = "https://api.dropboxapi.com/2";
 
   Result_API result{true, 0, nullptr};
@@ -61,11 +52,13 @@ Result_API api_request(REQUEST request_type, std::string path,
   try {
     result.data = std::make_shared<json>(json::parse(response.text));
   } catch (std::exception &e) {
-    std::cout << "Warning: failed to parse json" << std::endl;
-    std::cout << response.url << std::endl;
-    std::cout << e.what() << std::endl;
-    std::cout << response.text << std::endl;
-    std::cout << response.status_code << std::endl;
+    if (log_json_parse_exception) {
+      std::cout << "Warning: failed to parse json" << std::endl;
+      std::cout << response.url << std::endl;
+      std::cout << e.what() << std::endl;
+      std::cout << response.text << std::endl;
+      std::cout << response.status_code << std::endl;
+    }
   }
 
   return result;
