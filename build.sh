@@ -1,1 +1,6 @@
-clang++ -Wall -Wpedantic --std=c++17 src/main.cpp src/bytes.cpp src/crypto.cpp src/file.cpp -lcrypto -o main
+set -xe
+
+mkdir -p build
+cd build
+cmake -S .. -B . -DCMAKE_BUILD_TYPE=Debug
+make

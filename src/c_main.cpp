@@ -1,15 +1,10 @@
 #include "bytes.hpp"
 #include "crypto.hpp"
-#include <filesystem>
 #include <iostream>
 #include <openssl/sha.h>
 
 int main(int argc, char *argv[]) {
-  /* for (const auto &entry : std::filesystem::recursive_directory_iterator( */
-  /*          std::filesystem::path("test"))) { */
-  /*   if (entry.is_regular_file()) */
-  /*     std::cout << entry << std::endl; */
-  /* } */
+  
   crypto::Bytes key = Bytes::Bytes("TESTISI TESTISI TESTISI");
   {
     crypto::Bytes message = Bytes::Bytes("TESTISI TESTISI TESTISI");

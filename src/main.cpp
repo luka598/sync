@@ -1,14 +1,14 @@
 #include "bytes.hpp"
+#include "cpr/bearer.h"
+#include "cpr/parameters.h"
 #include "crypto.hpp"
+#include "dropbox.hpp"
 #include "file.hpp"
+
 #include <filesystem>
 #include <iostream>
-
-int main(int argc, char *argv[]) {
-  for (std::filesystem::path p : file::get_files("test")) {
-    std::cout << p.generic_string() << std::endl;
-    std::cout << file::read_file(p.native()).data.repr(Bytes::HEX, " ")
-              << std::endl;
-  }
+int main() {
+  dropbox::Result_FileMetadata r = dropbox::file_metadata("/data/test");
+  std::cout << r.success << std::endl;
   return 0;
 }
