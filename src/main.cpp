@@ -8,7 +8,7 @@
 #include <filesystem>
 #include <iostream>
 int main() {
-  dropbox::Result_FileMetadata r = dropbox::file_metadata("/data/test");
-  std::cout << r.success << std::endl;
+  dropbox::Dropbox dbx(".secret.config");
+  std::cout << dbx.file_metadata("/data/test").success << std::endl;
   return 0;
 }
