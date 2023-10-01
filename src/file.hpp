@@ -14,5 +14,6 @@ struct Result {
 Result read_file(const std::string filename);
 Result write_file(Bytes::Bytes &data, const std::string filename);
 std::vector<std::filesystem::path> get_files(std::string path);
+bool exists(std::string filename);
 
 } // namespace file

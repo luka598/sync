@@ -51,4 +51,9 @@ std::vector<std::filesystem::path> get_files(std::string path) {
   return files;
 }
 
+bool exists(std::string filename) {
+  std::ifstream file(filename);
+  return file.good();
+}
+
 } // namespace file
