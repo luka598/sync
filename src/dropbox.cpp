@@ -17,7 +17,7 @@ namespace dropbox {
 using json = nlohmann::json;
 
 enum class HTTP_METHOD { GET, POST };
-enum class CONTENT_TYPE { APPLICATION_JSON };
+enum class CONTENT_TYPE { APPLICATION_JSON, APPLICATION_OCTET_STREAM };
 
 class Request {
 public:
@@ -30,7 +30,7 @@ public:
   Bytes::Bytes body;
   // Response
   cpr::Response _cpr_response;
-  long status_code = 0;
+  long status_code = -1;
   bool success = false;
   Bytes::Bytes result;
 
@@ -39,6 +39,8 @@ public:
   void set_content_type(CONTENT_TYPE content_type) {
     if (content_type == CONTENT_TYPE::APPLICATION_JSON) {
       header.insert({"Content-type", "application/json"});
+    } else if (content_type == CONTENT_TYPE::APPLICATION_OCTET_STREAM) {
+      header.insert({"Content-type", "application/octet-stream"});
     }
   }
 
@@ -104,6 +106,38 @@ File_metadata Dropbox::file_metadata(std::string file_path) {
   r.add_json({{"include_deleted", false}, {"path", file_path}});
   r.send();
   if (r.success && r.res_as_json()) {
+    return {true};
+  } else {
+    return {false};
+  }
+}
+
+Download Dropbox::download(std::string file_path) {
+  Request r(DROPBOX_CONTENT_BASE + "/files/download", HTTP_METHOD::POST);
+  r.set_content_type(CONTENT_TYPE::APPLICATION_OCTET_STREAM);
+  r.add_bearer(access_token);
+  r.header.insert({"Dropbox-API-Arg", json{{"path", file_path}}.dump()});
+  r.send();
+  if (r.success) {
+    return {true, r.result};
+  } else {
+    return {false, {}};
+  }
+}
+
+Upload Dropbox::upload(std::string file_path, Bytes::Bytes data) {
+  Request r(DROPBOX_CONTENT_BASE + "/files/upload", HTTP_METHOD::POST);
+  r.set_content_type(CONTENT_TYPE::APPLICATION_OCTET_STREAM);
+  r.add_bearer(access_token);
+  r.header.insert({"Dropbox-API-Arg", json{{"autorename", false},
+                                           {"mode", "add"},
+                                           {"mute", false},
+                                           {"path", file_path},
+                                           {"strict_conflict", false}}
+                                          .dump()});
+  r.body = data;
+  r.send();
+  if (r.success) {
     return {true};
   } else {
     return {false};
