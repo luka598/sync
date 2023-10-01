@@ -1,4 +1,5 @@
 main
 secrets.hpp
 .*
+.secret.*
 build
