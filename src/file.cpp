@@ -1,11 +1,14 @@
 #include "file.hpp"
 
 #include "bytes.hpp"
+#include <exception>
 #include <filesystem>
 #include <fstream>
 #include <vector>
 
 namespace file {
+
+namespace fs = std::filesystem;
 
 Result read_file(const std::string filename) {
   std::vector<unsigned char> buffer;
@@ -29,7 +32,17 @@ Result read_file(const std::string filename) {
   return {true, buffer};
 }
 
-Result write_file(Bytes::Bytes &data, const std::string filename) {
+Result write_file(Bytes::Bytes data, const std::string filename,
+                  bool autocreate_dir) {
+
+  if (autocreate_dir) {
+    try {
+      fs::create_directories(fs::path(filename).parent_path());
+    } catch (std::exception &e) {
+      return {false, {}};
+    }
+  }
+
   std::ofstream file(filename, std::ios::binary);
 
   if (!file)
