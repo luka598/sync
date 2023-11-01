@@ -13,13 +13,13 @@
 namespace crypto
 {
 
-Result sha256(std::string input)
+Result sha256(bytes::Bytes input)
 {
     OpenSSL_add_all_algorithms();
 
     // Input data
-    const char *input_data = input.c_str();
-    size_t input_length = input.length();
+    const char *input_data = (const char *)input.c_array(); // TODO: Get rid of the c style cast
+    size_t input_length = input.size();
 
     EVP_MD_CTX *mdctx = EVP_MD_CTX_new();
     if (mdctx == NULL)
@@ -47,7 +47,7 @@ Result sha256(std::string input)
 
     EVP_MD_CTX_free(mdctx);
 
-    return {true, std::vector<unsigned char>(md_value, md_value + md_len)};
+    return {true, bytes::Bytes(md_value, md_value + md_len)};
 }
 
 Result encrypt(const bytes::Bytes key, const bytes::Bytes message)
@@ -89,7 +89,7 @@ Result encrypt(const bytes::Bytes key, const bytes::Bytes message)
 
     EVP_CIPHER_CTX_free(ctx);
 
-    Result result{true, std::vector<unsigned char>(c_message, c_message + c_message_len)};
+    Result result{true, bytes::Bytes(c_message, c_message + c_message_len)};
     delete[] c_message;
 
     return result;
