@@ -24,6 +24,12 @@ class Bytes
     std::string str(REPR repr_type = CHAR, std::string sep = "") const;
     size_t size() const;
     const unsigned char *c_array() const;
+    const std::vector<unsigned char> &vec() const;
+    Bytes operator+(const Bytes other) const;
+
+    friend std::ostream &operator<<(std::ostream &os, const Bytes &obj);
+
+    static Bytes merge(const Bytes a, const Bytes b);
 
   private:
     std::vector<unsigned char> data;

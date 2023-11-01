@@ -47,4 +47,28 @@ const unsigned char *Bytes::c_array() const
     return data.data();
 }
 
+const std::vector<unsigned char> &Bytes::vec() const
+{
+    return data;
+}
+
+Bytes Bytes::operator+(const Bytes other) const
+{
+    return Bytes::merge(*this, other);
+}
+
+std::ostream &operator<<(std::ostream &os, const Bytes &obj)
+{
+    os << "Bytes(" << obj.str() << ")";
+    return os;
+}
+
+Bytes Bytes::merge(Bytes a, Bytes b)
+{
+    std::vector<unsigned char> merged;
+    merged.insert(merged.end(), a.vec().begin(), a.vec().end());
+    merged.insert(merged.end(), b.vec().begin(), b.vec().end());
+    return Bytes(merged);
+}
+
 } // namespace bytes
