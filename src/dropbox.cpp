@@ -71,7 +71,7 @@ public:
       cpr_payload.Add({pair.first, pair.second});
     }
 
-    cpr::Body cpr_body{body.repr()};
+    cpr::Body cpr_body{body.str()};
 
     if (method == HTTP_METHOD::GET) {
       _cpr_response = cpr::Get(cpr_url, cpr_header, cpr_parameters);
@@ -93,7 +93,7 @@ public:
 
   std::unique_ptr<json> res_as_json() {
     try {
-      return std::make_unique<json>(json::parse(result.repr()));
+      return std::make_unique<json>(json::parse(result.str()));
     } catch (std::exception &e) {
       return std::make_unique<json>(nullptr);
     }
@@ -210,8 +210,7 @@ void Dropbox::load_config() {
   if (!f.success)
     throw std::runtime_error("Error while reading config file.");
   try {
-    json config = json::parse(
-        f.data.repr()); // HACK: Using repr is kind of a hack but idk for now
+    json config = json::parse(f.data.str());
     app_key = config["app_key"];
     app_secret = config["app_secret"];
     refresh_token = config["refresh_token"];

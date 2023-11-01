@@ -10,7 +10,7 @@ Bytes::Bytes(std::string s, REPR repr_type) : data(s.begin(), s.end()) {}
 Bytes::Bytes(unsigned char *begin, unsigned char *end) : data(begin, end) {}
 Bytes::Bytes(std::vector<unsigned char> v) : data(v) {}
 
-std::string Bytes::repr(REPR repr_type, std::string sep) const {
+std::string Bytes::str(REPR repr_type, std::string sep) const {
   if (repr_type == REPR::CHAR) {
     return std::string(data.begin(), data.end());
   } else if (repr_type == REPR::HEX) {

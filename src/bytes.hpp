@@ -10,6 +10,7 @@ enum REPR {
   HEX,
 };
 
+// TODO: Change unsigned char to uint8_t
 class Bytes {
 public:
   Bytes();                                         // Empty
@@ -17,7 +18,7 @@ public:
   Bytes(unsigned char *begin, unsigned char *end); // From range
   Bytes(std::vector<unsigned char> v);             // From vector
 
-  std::string repr(REPR repr_type = CHAR, std::string sep = "") const;
+  std::string str(REPR repr_type = CHAR, std::string sep = "") const;
   size_t size() const;
   const unsigned char *c_array() const;
 
