@@ -5,20 +5,22 @@
 #include <string>
 #include <vector>
 
-namespace sync {
+namespace sync
+{
 
-class Sync {
-public:
-  Sync(std::string config_file_path);
+class Sync
+{
+  public:
+    Sync(std::string config_file_path);
 
-  void load();
-  void save();
-  void hash();
+    void load();
+    void save();
+    void hash();
 
-private:
-  std::string config_file_path;
-  std::vector<bytes::Bytes> next = {};
-  std::map<std::string, bytes::Bytes> files;
+  private:
+    std::string config_file_path;
+    std::vector<bytes::Bytes> next = {};
+    std::map<std::string, bytes::Bytes> files;
 };
 
 } // namespace sync

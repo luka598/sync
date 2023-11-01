@@ -7,8 +7,9 @@
 
 #include <filesystem>
 #include <iostream>
-int main() {
-  std::cout << std::boolalpha;
+int main()
+{
+    std::cout << std::boolalpha;
 
-  return 0;
+    return 0;
 }

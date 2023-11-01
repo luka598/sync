@@ -1,6 +1,7 @@
 #include "sync.hpp"
 
-namespace sync {
+namespace sync
+{
 
 Sync::Sync(std::string config_file_path){};
 void Sync::load(){};
