@@ -4,7 +4,7 @@
 #include <string>
 
 namespace crypto {
-typedef Bytes::Bytes Bytes; // Not sure if this is ok
+typedef bytes::Bytes Bytes; // Not sure if this is ok
 
 struct Result {
   bool success;

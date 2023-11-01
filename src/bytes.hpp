@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-namespace Bytes {
+namespace bytes {
 
 enum REPR {
   CHAR,
@@ -25,4 +25,4 @@ private:
   std::vector<unsigned char> data;
 };
 
-} // namespace Bytes
+} // namespace bytes

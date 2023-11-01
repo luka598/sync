@@ -4,16 +4,16 @@
 #include <openssl/sha.h>
 
 int main(int argc, char *argv[]) {
-  
-  crypto::Bytes key = Bytes::Bytes("TESTISI TESTISI TESTISI");
+
+  crypto::Bytes key = bytes::Bytes("TESTISI TESTISI TESTISI");
   {
-    crypto::Bytes message = Bytes::Bytes("TESTISI TESTISI TESTISI");
+    crypto::Bytes message = bytes::Bytes("TESTISI TESTISI TESTISI");
     crypto::Bytes c_message = crypto::encrypt(key, message).data;
     crypto::Bytes d_message = crypto::decrypt(key, c_message).data;
-    std::cout << key.repr(Bytes::REPR::HEX, " ") << std::endl;
-    std::cout << message.repr(Bytes::REPR::HEX, " ") << std::endl;
-    std::cout << c_message.repr(Bytes::REPR::HEX, " ") << std::endl;
-    std::cout << d_message.repr(Bytes::REPR::HEX, " ") << std::endl;
+    std::cout << key.repr(bytes::REPR::HEX, " ") << std::endl;
+    std::cout << message.repr(bytes::REPR::HEX, " ") << std::endl;
+    std::cout << c_message.repr(bytes::REPR::HEX, " ") << std::endl;
+    std::cout << d_message.repr(bytes::REPR::HEX, " ") << std::endl;
   }
   std::cout << "---" << std::endl;
   {
@@ -24,9 +24,9 @@ int main(int argc, char *argv[]) {
         0xf4, 0xb7, 0xe6, 0xdb, 0x87, 0x96, 0x90, 0xc1, 0x6d, 0xd6,
         0xd8, 0xd9, 0xad, 0xdf, 0x63, 0xdb, 0x52, 0xa7});
     crypto::Bytes d_message = crypto::decrypt(key, c_message).data;
-    std::cout << key.repr(Bytes::REPR::HEX, " ") << std::endl;
-    std::cout << c_message.repr(Bytes::REPR::HEX, " ") << std::endl;
-    std::cout << d_message.repr(Bytes::REPR::HEX, " ") << std::endl;
+    std::cout << key.repr(bytes::REPR::HEX, " ") << std::endl;
+    std::cout << c_message.repr(bytes::REPR::HEX, " ") << std::endl;
+    std::cout << d_message.repr(bytes::REPR::HEX, " ") << std::endl;
     std::cout << d_message.repr() << std::endl;
   }
   return 0;

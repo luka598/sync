@@ -13,7 +13,7 @@ struct File_metadata {
 
 struct Download {
   bool success;
-  Bytes::Bytes data;
+  bytes::Bytes data;
 };
 
 struct Upload {
@@ -25,7 +25,7 @@ public:
   Dropbox(std::string config_file);
   File_metadata file_metadata(std::string file_path);
   Download download(std::string file_path);
-  Upload upload(std::string file_path, Bytes::Bytes data);
+  Upload upload(std::string file_path, bytes::Bytes data);
 
 private:
   std::string app_key;

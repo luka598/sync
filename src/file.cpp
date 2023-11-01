@@ -32,7 +32,7 @@ Result read_file(const std::string filename) {
   return {true, buffer};
 }
 
-Result write_file(Bytes::Bytes data, const std::string filename,
+Result write_file(bytes::Bytes data, const std::string filename,
                   bool autocreate_dir) {
 
   if (autocreate_dir) {

@@ -27,12 +27,12 @@ public:
   std::map<std::string, std::string> header;
   std::map<std::string, std::string> parameters;
   std::map<std::string, std::string> payload;
-  Bytes::Bytes body;
+  bytes::Bytes body;
   // Response
   cpr::Response _cpr_response;
   long status_code = -1;
   bool success = false;
-  Bytes::Bytes result;
+  bytes::Bytes result;
 
   Request(std::string url, HTTP_METHOD method) : url(url), method(method) {}
 
@@ -50,7 +50,7 @@ public:
 
   void add_json(json data) {
     set_content_type(CONTENT_TYPE::APPLICATION_JSON);
-    body = Bytes::Bytes(data.dump());
+    body = bytes::Bytes(data.dump());
   }
 
   void send() {
@@ -88,7 +88,7 @@ public:
     status_code = _cpr_response.status_code;
     success =
         _cpr_response.status_code >= 200 && _cpr_response.status_code <= 299;
-    result = Bytes::Bytes(_cpr_response.text);
+    result = bytes::Bytes(_cpr_response.text);
   }
 
   std::unique_ptr<json> res_as_json() {
@@ -125,7 +125,7 @@ Download Dropbox::download(std::string file_path) {
   }
 }
 
-Upload Dropbox::upload(std::string file_path, Bytes::Bytes data) {
+Upload Dropbox::upload(std::string file_path, bytes::Bytes data) {
   Request r(DROPBOX_CONTENT_BASE + "/files/upload", HTTP_METHOD::POST);
   r.set_content_type(CONTENT_TYPE::APPLICATION_OCTET_STREAM);
   r.add_bearer(access_token);
@@ -224,7 +224,7 @@ void Dropbox::save_config() {
   json config = {{"app_key", app_key},
                  {"app_secret", app_secret},
                  {"refresh_token", refresh_token}};
-  Bytes::Bytes data(config.dump());
+  bytes::Bytes data(config.dump());
   file::write_file(data, config_file);
 }
 

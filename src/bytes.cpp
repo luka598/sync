@@ -3,7 +3,7 @@
 #include <sstream>
 #include <string>
 
-namespace Bytes {
+namespace bytes {
 
 Bytes::Bytes() : data({}) {}
 Bytes::Bytes(std::string s, REPR repr_type) : data(s.begin(), s.end()) {}
@@ -27,4 +27,4 @@ size_t Bytes::size() const { return data.size(); }
 
 const unsigned char *Bytes::c_array() const { return data.data(); }
 
-} // namespace Bytes
+} // namespace bytes
